@@ -1,4 +1,3 @@
-import os
 import argparse
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -7,11 +6,13 @@ from data_utils import get_weight_quant_data_with_tokenizer
 from eval_utils import evaluate
 from pathlib import Path
 
+
 def main():
     parser = argparse.ArgumentParser()
 
     parser.add_argument("--model_path", type=str, required=True)
-    parser.add_argument("--load_path", type=str, required=True, help="export_dir from your script (save_pretrained output)")
+    parser.add_argument("--load_path", type=str, required=True,
+                        help="export_dir from your script (save_pretrained output)")
     parser.add_argument("--cache_dir", default="./cache", type=str)
     parser.add_argument("--calib_data", type=str, default="wikitext2", choices=["c4", "wikitext2"])
     parser.add_argument("--seqlen", type=int, default=2048)
@@ -31,7 +32,6 @@ def main():
         tokenizer.add_special_tokens({"eos_token": "</s>"})
     tokenizer.pad_token = tokenizer.eos_token
 
-
     model = AutoModelForCausalLM.from_pretrained(
         args.load_path,
         torch_dtype=torch.float16 if torch.cuda.is_available() else None,
@@ -42,6 +42,7 @@ def main():
 
     _ = get_weight_quant_data_with_tokenizer(args, tokenizer)
     evaluate(model, args)
+
 
 if __name__ == "__main__":
     main()

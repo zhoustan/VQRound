@@ -6,7 +6,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
 
-import transformers
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import faiss
 
@@ -14,6 +13,7 @@ from quant import Quantizer
 from gptq import GPTQ
 
 from utils import find_linears_in_layer, get_parent, set_child
+
 
 class RectifiedSigmoid(nn.Module):
     def __init__(self, gamma=-0.1, zeta=1.1):
@@ -27,6 +27,7 @@ class RectifiedSigmoid(nn.Module):
     def inverse(self, y):
         return -torch.log((self.zeta - self.gamma) / (y - self.gamma) - 1)
 
+
 def per_row_affine_params(w: torch.Tensor, n_bits: int) -> Tuple[torch.Tensor, torch.Tensor]:
     out, in_dim = w.shape
     wmin = w.amin(dim=1, keepdim=True)
@@ -36,7 +37,6 @@ def per_row_affine_params(w: torch.Tensor, n_bits: int) -> Tuple[torch.Tensor, t
     scale = torch.where(scale == 0, torch.ones_like(scale), scale)
     zero = torch.round(-wmin / scale)
     return scale.view(-1, 1), zero.view(-1, 1)
-
 
 
 class VQRoundLinear(nn.Module):
@@ -354,7 +354,6 @@ def gptq_sequential_collect_grid_opt(
     return grids
 
 
-
 def replace_linear_with_vqround_using_grids(
         model: nn.Module,
         grids: dict,
@@ -383,7 +382,7 @@ def replace_linear_with_vqround_using_grids(
             to_replace.append((full_name, submod))
 
     def get_parent(root: nn.Module, path: str):
-        parts = path.split(".");
+        parts = path.split(".")
         cur = root
         for p in parts[:-1]:
             if p.isdigit():
@@ -428,7 +427,7 @@ def harden_and_export(student: nn.Module, save_dir: str):
             wrappers.append((name, m))
 
     def get_parent(root: nn.Module, path: str):
-        parts = path.split(".");
+        parts = path.split(".")
         cur = root
         for p in parts[:-1]:
             if p.isdigit():

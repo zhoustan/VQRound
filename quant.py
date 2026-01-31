@@ -9,6 +9,7 @@ def quantize(x, scale, zero, maxq):
     q = torch.clamp(torch.round(x / scale) + zero, 0, maxq)
     return scale * (q - zero)
 
+
 class Quantizer(nn.Module):
 
     def __init__(self, shape=1):
@@ -18,10 +19,10 @@ class Quantizer(nn.Module):
         self.register_buffer('zero', torch.zeros(shape))
 
     def configure(
-        self,
-        bits, perchannel=False, sym=True,
-        mse=False, norm=2.4, grid=100, maxshrink=.8,
-        trits=False
+            self,
+            bits, perchannel=False, sym=True,
+            mse=False, norm=2.4, grid=100, maxshrink=.8,
+            trits=False
     ):
         self.maxq = torch.tensor(2 ** bits - 1)
         self.perchannel = perchannel
@@ -66,14 +67,14 @@ class Quantizer(nn.Module):
         xmax[tmp] = +1
 
         if self.maxq < 0:
-          self.scale = xmax
-          self.zero = xmin
+            self.scale = xmax
+            self.zero = xmin
         else:
-          self.scale = (xmax - xmin) / self.maxq
-          if self.sym:
-              self.zero = torch.full_like(self.scale, (self.maxq + 1) / 2)
-          else:
-              self.zero = torch.round(-xmin / self.scale)
+            self.scale = (xmax - xmin) / self.maxq
+            if self.sym:
+                self.zero = torch.full_like(self.scale, (self.maxq + 1) / 2)
+            else:
+                self.zero = torch.round(-xmin / self.scale)
 
         if self.mse:
             best = torch.full([x.shape[0]], float('inf'), device=dev)
@@ -132,6 +133,7 @@ try:
     import quant_cuda
 except:
     print('CUDA extension not installed.')
+
 
 # Assumes layer is perfectly divisible into 1024 * 1024 blocks
 class Quant3Linear(nn.Module):
@@ -198,6 +200,7 @@ class Quant3Linear(nn.Module):
             y = y.to(dtype)
             return y.reshape(outshape)
         raise ValueError('Only supports a single token currently.')
+
 
 def make_quant3(module, names, name='', faster=False):
     if isinstance(module, Quant3Linear):

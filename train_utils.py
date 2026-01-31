@@ -11,6 +11,7 @@ from torch.utils.data import DataLoader
 from utils import hash_ids, collect_trainable_codebooks
 from vqround import VQRoundLinear
 
+
 class LinearTempDecay:
     def __init__(self, t_max: int, rel_start_decay: float, start_b: float, end_b: float):
         self.t_max = int(t_max)
@@ -49,6 +50,7 @@ def _kd_loss_with_temperature(student_logits: torch.Tensor, teacher_logits: torc
     log_p_t = F.log_softmax(teacher_logits / T, dim=-1)
     return F.kl_div(log_p_s, log_p_t, log_target=True, reduction="batchmean") * (T * T)
 
+
 def _round_reg_checkpointed(m, beta_now, step, rnd_loss, amp_dtype):
     def _fn(codebook: torch.Tensor):
         with torch.amp.autocast("cuda", dtype=amp_dtype):
@@ -58,7 +60,6 @@ def _round_reg_checkpointed(m, beta_now, step, rnd_loss, amp_dtype):
             return rnd_loss(step, r_soft, override_b=beta_now)
 
     return checkpoint(_fn, m.codebook, use_reentrant=False)
-
 
 
 @torch.no_grad()
@@ -124,7 +125,6 @@ def freeze_stochastic_but_keep_train(model):
     model.train(True)
     if hasattr(model, "config"):
         model.config.use_cache = False
-
 
 
 def train_e2e_kd(
@@ -253,4 +253,3 @@ def train_e2e_kd(
                 flush=True)
             best = min(best, float(task_loss.item()))
     return best
-

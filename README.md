@@ -1,15 +1,19 @@
-# Revisiting Adaptive Rounding with Vectorized Reparameterization for LLM Quantization
-Yuli Zhou, Qingxuan Chen, Luca Benini, Guolei Sun, Yawei Li
+<div align="center">
+
+<h2>
+Revisiting Adaptive Rounding with Vectorized Reparameterization for LLM Quantization
+</h2>
+
+
+Yuli Zhou, Qingxuan Chen, Luca Benini, Guolei Sun, Yawei Li*
 
 ![visitors](https://visitor-badge.laobi.icu/badge?page_id=zhoustan.VQRound)
 [![HuggingFace](https://img.shields.io/badge/HuggingFace-VQRound-yellow.svg?logo=huggingface)](https://huggingface.co/collections/stanzhou/vqround)
 
+</div>
 
 > **Abstract:**  
-Adaptive Rounding has emerged as an alternative to round-to-nearest (RTN) for post-training quantization by enabling cross-element error cancellation. Yet, dense and element-wise rounding matrices are prohibitively expensive for billion-parameter large language models (LLMs). We revisit adaptive rounding from an efficiency perspective and propose **VQRound**, a parameter-efficient optimization framework that reparameterizes the rounding matrix into a compact codebook.
-Unlike low-rank alternatives, VQRound minimizes the element-wise worst-case error under L<sub>∞</sub> norm, which is critical for handling heavy-tailed weight distributions in LLMs. Beyond reparameterization, we identify rounding initialization as a decisive factor and develop a lightweight end-to-end finetuning pipeline that optimizes codebooks across all layers using only 128 samples.
-Extensive experiments on OPT, LLaMA, LLaMA2, and Qwen3 models demonstrate that VQRound achieves better convergence than traditional adaptive rounding at the same number of steps while using as little as 0.2\% of the trainable parameters. Our results show that adaptive rounding can be made both scalable and fast-fitting. 
-
+Adaptive Rounding has emerged as an alternative to round-to-nearest (RTN) for post-training quantization by enabling cross-element error cancellation. Yet, dense and element-wise rounding matrices are prohibitively expensive for billion-parameter large language models (LLMs). We revisit adaptive rounding from an efficiency perspective and propose **VQRound**, a parameter-efficient optimization framework that reparameterizes the rounding matrix into a compact codebook. Unlike low-rank alternatives, VQRound minimizes the element-wise worst-case error under L<sub>∞</sub> norm, which is critical for handling heavy-tailed weight distributions in LLMs. Beyond reparameterization, we identify rounding initialization as a decisive factor and develop a lightweight end-to-end finetuning pipeline that optimizes codebooks across all layers using only 128 samples. Extensive experiments on OPT, LLaMA, LLaMA2, and Qwen3 models demonstrate that VQRound achieves better convergence than traditional adaptive rounding at the same number of steps while using as little as 0.2\% of the trainable parameters. Our results show that adaptive rounding can be made both scalable and fast-fitting. 
 
 
 ## Contents
@@ -27,10 +31,10 @@ Extensive experiments on OPT, LLaMA, LLaMA2, and Qwen3 models demonstrate that V
 
 **VQRound vs. Prior Adaptive Rounding Methods**
 
-Unlike AdaRound and LoRA Round, VQRound reparameterizes the rounding matrix into a compact codebook.  
+Unlike AdaRound and LoRA Round, VQRound reparameterizes the rounding matrix into compact codebooks.  
 
 - Minimizes element-wise worst-case error under the L<sub>∞</sub> norm
-- Uses as little as 0.2% trainable parameters for billion-parameter model
+- Uses as few as 0.2% trainable parameters for billion-parameter models
 - Supports an end-to-end fine-tuning pipeline as an alternative to traditional block-wise reconstruction  
 
 This design makes adaptive rounding scalable for billion-parameter LLMs.

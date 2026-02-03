@@ -8,6 +8,7 @@ Revisiting Adaptive Rounding with Vectorized Reparameterization for LLM Quantiza
 Yuli Zhou, Qingxuan Chen, Luca Benini, Guolei Sun, Yawei Li*
 
 ![visitors](https://visitor-badge.laobi.icu/badge?page_id=zhoustan.VQRound)
+[![arXiv](https://img.shields.io/badge/arXiv-2602.02151-b31b1b.svg)](http://arxiv.org/abs/2602.02151)
 [![HuggingFace](https://img.shields.io/badge/HuggingFace-VQRound-yellow.svg?logo=huggingface)](https://huggingface.co/collections/stanzhou/vqround)
 
 </div>
@@ -122,10 +123,11 @@ python test.py \
 
 ## Citation
 ```bibtex
-@inproceedings{zhou2025vqround,
-  title={Revisiting Adaptive Rounding with Vectorized Reparameterization for LLM Quantization},
-  author={Zhou, Yuli and Chen, Qingxuan and Benini, Luca and Sun, Guolei and Li, Yawei},
-  year={2025}
+@artical{zhou2026revisitingadaptiveroundingvectorized,
+      title={Revisiting Adaptive Rounding with Vectorized Reparameterization for LLM Quantization}, 
+      author={Yuli Zhou and Qingxuan Chen and Luca Benini and Guolei Sun and Yawei Li},
+      journal={arXiv preprint arXiv:2602.02151},
+      year={2026}
 }
 ```
 
